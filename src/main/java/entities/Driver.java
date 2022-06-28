@@ -32,8 +32,10 @@ public class Driver {
 
 
 
-    @OneToMany(mappedBy = "driver", cascade = CascadeType.PERSIST)
-    private List<Car> car = new ArrayList<>();
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "car_id", referencedColumnName = "id", nullable = false)
+    private Car car;
 
     public Driver() {
     }
@@ -65,18 +67,35 @@ public class Driver {
     }
 
 
-    public List<Car> getCar() {
-        return car;
+    public int getBirthYear() {
+        return birthYear;
     }
 
-    public void setCar(List<Car> car) {
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setCar(Car car) {
         this.car = car;
     }
 
-    public void addToCar(Car car) {
-        this.car.add(car);
-        car.setDriver(this);
-    }
+
 
     @Override
     public String toString() {

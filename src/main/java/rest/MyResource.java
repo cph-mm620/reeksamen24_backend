@@ -45,9 +45,10 @@ public class MyResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("readWhere/{nameOfOneSide}") //name of some side
-    public Response readWhere (@PathParam("nameOfOneSide") String nameOfOneSide) {
-        return Response.ok().entity(GSON.toJson(facade.readWhere(nameOfOneSide))).build();
+    @Path("readDriver/{id}") //name of someone id
+    public Response getByDriverId (@PathParam("id") int id) {
+        System.out.println(id);
+        return Response.ok().entity(GSON.toJson(facade.getByDriverId(id))).build();
     }
 
     @GET
@@ -62,8 +63,12 @@ public class MyResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update (@PathParam("id") int id, String jsonContext) {
+        System.out.println("------------------");
+        System.out.println(jsonContext);
             Car c = GSON.fromJson(jsonContext, Car.class);
+
             c.setId(id);
+        System.out.println(c);
             return Response.ok().entity(facade.update(c)).build();
     }
 

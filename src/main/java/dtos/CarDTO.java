@@ -8,12 +8,17 @@ import java.util.Objects;
 public class CarDTO {
     private int id;
     private String name;
-    private DriverDTO driver;
+    private String brand;
+    //private DriverDTO driver;
     private List<RaceDTO> races = new ArrayList<>();
+    private List<DriverDTO> drivers = new ArrayList<>();
 
-    public CarDTO(String name) {
+    public CarDTO(String name, String brand) {
         this.name = name;
+        this.brand = brand;
     }
+
+
 
     public static List<CarDTO> getDtos(List<Car> cars){
         List<CarDTO> cdtos = new ArrayList<>();
@@ -25,7 +30,9 @@ public class CarDTO {
         if(c != null){
             this.id = c.getId();
             this.name = c.getName();
+            this.brand = c.getBrand();
             this.races = RaceDTO.getDtos(c.getRaces());
+            this.drivers = DriverDTO.getDtos(c.getDriver());
         }
     }
 
@@ -45,12 +52,20 @@ public class CarDTO {
         this.name = name;
     }
 
-    public DriverDTO getDriver() {
-        return driver;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setDriver(DriverDTO driver) {
-        this.driver = driver;
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public List<DriverDTO> getDriver() {
+        return drivers;
+    }
+
+    public void setDriver(List<DriverDTO> drivers) {
+        this.drivers = drivers;
     }
 
     public List<RaceDTO> getRaces() {
@@ -65,17 +80,21 @@ public class CarDTO {
         this.races.add(race);
     }
 
+    public void addToDrivers(DriverDTO driver) {
+        this.drivers.add(driver);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CarDTO that = (CarDTO) o;
-        return id == that.id && name.equals(that.name) && driver.equals(that.driver) && races.equals(that.races);
+        return id == that.id && name.equals(that.name) && drivers.equals(that.drivers) && races.equals(that.races);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, driver, races);
+        return Objects.hash(id, name, drivers, races);
     }
 
     @Override
@@ -83,7 +102,7 @@ public class CarDTO {
         return "Car{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", driver=" + driver +
+                ", drivers=" + drivers +
                 ", races=" + races +
                 '}';
     }

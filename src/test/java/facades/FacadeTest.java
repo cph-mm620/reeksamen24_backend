@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.CarDTO;
+import dtos.DriverDTO;
 import entities.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,11 +67,12 @@ class FacadeTest {
             Race r3 = new Race("Round 2");
             Driver d = new Driver("Max Verstappen");
             Driver d2 = new Driver("Sergio Perez");
+            Driver d3 = new Driver("Louis Hamilton");
     //        OtherOneSide oos = new OtherOneSide("other one side");
 
-            c.setDriver(d2);
-            c2.setDriver(d);
-            c3.setDriver(d);
+            c.addToDriver(d2);
+            c2.addToDriver(d);
+            c3.addToDriver(d3);
             c.addToRaces(r);
             c.addToRaces(r2);
             c2.addToRaces(r2);
@@ -107,7 +109,7 @@ class FacadeTest {
         c.addToRaces(r);
         c.addToRaces(r2);
         Driver d = new Driver("create added this driver");
-        c.setDriver(d);
+        c.addToDriver(d);
 
         String actual = facade.create(c).getName();
         String expected = "create added this";
@@ -116,12 +118,12 @@ class FacadeTest {
 
     @Test
     void readWhere() {
-        List<CarDTO> cdto = facade.readWhere("Maria McNally");
-        for (CarDTO cd: cdto) {
+        List<DriverDTO> ddto = facade.readWhere();
+        for (DriverDTO cd: ddto) {
             System.out.println(cd);
         }
-        int actual = cdto.size();
-        int expected = 1;
+        int actual = ddto.size();
+        int expected = manySideSize;
         assertEquals(actual, expected);
 
     }
@@ -145,7 +147,7 @@ class FacadeTest {
         Race r2 = new Race("second updated race");
         Driver d = new Driver("Driver updated");
 
-        c.setDriver(d);
+        c.addToDriver(d);
         c.addToRaces(r);
         c.addToRaces(r2);
         System.out.println("c as in car c");
@@ -168,7 +170,15 @@ class FacadeTest {
     void getById() {
         CarDTO cdto = facade.getById(3);
         String actual = cdto.getName();
-        String expected = "third many side";
+        String expected = "Volvo";
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getByDriverId() {
+        DriverDTO ddto = facade.getByDriverId(3);
+        String actual = ddto.getName();
+        String expected = "Sergio Perez";
         assertEquals(expected, actual);
     }
 }

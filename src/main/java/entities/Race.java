@@ -32,13 +32,20 @@ public class Race {
 
 
 
-    @JoinTable(name = "car_race", joinColumns = {
+    @JoinTable(name = "Car_Race", joinColumns = {
             @JoinColumn(name = "cars", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "races", referencedColumnName = "id")})
     @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Car> cars = new ArrayList<>();
 
     public Race() {
+    }
+
+    public Race(String name, String location, String startDate, String duration) {
+        this.name = name;
+        this.location = location;
+        this.startDate = startDate;
+        this.duration = duration;
     }
 
     public Race(String name) {

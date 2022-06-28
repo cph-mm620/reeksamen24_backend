@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.RaceDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -31,18 +33,15 @@ public class Car {
     private String sponsor;
 
     @NotNull
-    @Column(name = "make")
-    private String make;
-
-    @NotNull
     @Column(name = "year")
     private int year;
 
 
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "car", cascade = CascadeType.PERSIST)
     @JoinColumn(name = "driver_id", referencedColumnName = "id", nullable = false)
-    private Driver driver;
+    private List<Driver> driver = new ArrayList<>();
+
 
     @ManyToMany(mappedBy = "cars", cascade = CascadeType.PERSIST)
     private List<Race> races = new ArrayList<>();
@@ -50,6 +49,13 @@ public class Car {
     public Car() {
     }
 
+    public Car(String name, String brand, String color, String sponsor, int year) {
+        this.name = name;
+        this.brand = brand;
+        this.color = color;
+        this.sponsor = sponsor;
+        this.year = year;
+    }
     //Just for the test class
     public Car(int id, String name) {
         this.id = id;
@@ -76,11 +82,43 @@ public class Car {
         this.name = name;
     }
 
-    public Driver getDriver() {
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(String sponsor) {
+        this.sponsor = sponsor;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public List<Driver> getDriver() {
         return driver;
     }
 
-    public void setDriver(Driver driver) {
+    public void setDriver(List<Driver> driver) {
         this.driver = driver;
     }
 
@@ -92,9 +130,15 @@ public class Car {
         this.races = races;
     }
 
+
     public void addToRaces(Race race) {
         this.races.add(race);
         race.addToCars(this);
+    }
+
+    public void addToDriver(Driver driver) {
+        this.driver.add(driver);
+        driver.setCar(this);
     }
 
     @Override

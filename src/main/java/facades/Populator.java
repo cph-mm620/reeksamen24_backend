@@ -20,17 +20,19 @@ public class Populator {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Car c = new Car("Fararri");
-        Car c2 = new Car("Lamborghini");
-        Car c3 = new Car("Bentley");
-        Race r = new Race("Testing");
-        Race r2 = new Race("Firts Round ");
-        Race r3 = new Race("Secound Round");
-        Driver d = new Driver("Lando Norris",1997, "Pro", "Male");
+        Car c = new Car("DCT F8 Tributo","Farrari","Red", "Farrari",2021);
+        Car c2 = new Car("Aventador LP","Lamborghini","Black", "Redbull", 2021);
+        Car c3 = new Car("GT3","Bentley","White", "n/a", 2021);
+        Race r = new Race("Testing","Spain","28-05-22","10 min");
+        Race r2 = new Race("First Round", "Spain", "28-05-22", "5 min");
+        Race r3 = new Race("Secound Round", "Spain", "28-05-22", "15 min");
+        Driver d = new Driver("Lando Norris",1999, "Pro", "Male");
+        Driver d1 = new Driver("Pierre Gasly",1996, "Pro", "Male");
 
-        c.setDriver(d);
-        c2.setDriver(d);
-        c3.setDriver(d);
+        c.addToDriver(d);
+        c2.addToDriver(d);
+        c3.addToDriver(d1);
+
 
         c.addToRaces(r);
         c.addToRaces(r2);
@@ -38,6 +40,7 @@ public class Populator {
         c2.addToRaces(r3);
         c3.addToRaces(r3);
         c3.addToRaces(r);
+
 
 
         em.persist(c);
@@ -76,8 +79,8 @@ public class Populator {
     }
 
     public static void main(String[] args) {
-            populate();
-              // populateUsers();
+         populate();
+        //       populateUsers();
 
     }
 }

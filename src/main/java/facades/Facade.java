@@ -2,6 +2,7 @@ package facades;
 
 import dtos.CarDTO;
 
+import dtos.DriverDTO;
 import entities.Car;
 
 import entities.Driver;
@@ -9,6 +10,7 @@ import entities.Driver;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Facade {
@@ -34,16 +36,13 @@ public class Facade {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-
-            Car c = new Car(newCar.getName());
-            c.setRaces(newCar.getRaces());
-            Driver d = new Driver(newCar.getDriver().getName());
-
-            c.setDriver(d);
-            em.persist(c);
+            Car car = new Car(newCar.getName(), newCar.getBrand(), newCar.getColor(), newCar.getSponsor(), newCar.getYear());
+            car.setDriver(newCar.getDriver());
+            car.setRaces(newCar.getRaces());
+            em.persist(car);
 
             em.getTransaction().commit();
-            return new CarDTO(c);
+            return new CarDTO(car);
         }finally {
             em.close();
         }
@@ -61,14 +60,21 @@ public class Facade {
         }
     }
 
-    public List<CarDTO> readWhere(String nameOfDriver){
+    public List<DriverDTO> readWhere(){
         EntityManager em = emf.createEntityManager();
         try{
-            TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c WHERE c.driver.name = :driverName", Car.class);
-            query.setParameter("driverName", nameOfDriver);
-            List<Car> cars = query.getResultList();
-            List<CarDTO> cdtos = CarDTO.getDtos(cars);
-            return cdtos;
+            TypedQuery<Driver> query = em.createQuery("SELECT d FROM Driver d",  Driver.class);
+            List<Driver> drivers = query.getResultList();
+            List<Driver> drivers1 = new ArrayList<>();
+//            for (Driver driver : drivers) {
+//                if (driver.getId() == id) {
+//                    drivers1.add(driver);
+//                    System.out.println(driver);
+//                }
+
+            //}
+            List<DriverDTO> ddtos = DriverDTO.getDtos(drivers);
+            return ddtos;
         }finally {
             em.close();
         }
@@ -106,6 +112,16 @@ public class Facade {
         try{
             Car c = em.find(Car.class, id);
             return new CarDTO(c);
+        }finally {
+            em.close();
+        }
+    }
+
+    public DriverDTO getByDriverId(int id){
+        EntityManager em = emf.createEntityManager();
+        try{
+            Driver d = em.find(Driver.class, id);
+            return new DriverDTO(d);
         }finally {
             em.close();
         }
