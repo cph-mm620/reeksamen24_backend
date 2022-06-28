@@ -50,6 +50,7 @@ public class MyResource {
         return Response.ok().entity(GSON.toJson(facade.getDrivers())).build();
     }
 
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("read/{id}")
