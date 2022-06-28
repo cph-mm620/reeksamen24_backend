@@ -200,7 +200,7 @@ class MyResourceTest {
                 .body("size()", equalTo(3));
     }*/
 
-    @Test
+ /*   @Test
     void getById() {
         given()
             .contentType("application/json")
@@ -209,7 +209,7 @@ class MyResourceTest {
             .assertThat()
             .statusCode(HttpStatus.OK_200.getStatusCode())
             .body("name", equalTo("Volvo"));
-    }
+    }*/
 
     @Test
     void getDrivers() {

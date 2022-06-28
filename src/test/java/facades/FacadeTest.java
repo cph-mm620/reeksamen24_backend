@@ -167,21 +167,21 @@ class FacadeTest {
         assertEquals(expected, actual);
     }*/
 
-    @Test
+/*    @Test
     void getById() {
         CarDTO cdto = facade.getById(3);
         String actual = cdto.getName();
         String expected = "Volvo";
         assertEquals(expected, actual);
-    }
+    }*/
 
-    @Test
+/*    @Test
     void getByDriverId() {
         DriverDTO ddto = facade.getByDriverId(3);
         String actual = ddto.getName();
         String expected = "Sergio Perez";
         assertEquals(expected, actual);
-    }
+    }*/
 
     @Test
     void getDrivers() {
