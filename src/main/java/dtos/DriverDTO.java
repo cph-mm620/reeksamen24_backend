@@ -1,27 +1,28 @@
 package dtos;
-import entities.OtherOneSide;
+import entities.Driver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class OtherOneSideDTO {
+public class DriverDTO {
     private int id;
     private String name;
 
-    public OtherOneSideDTO(String name) {
+
+    public DriverDTO(String name) {
         this.name = name;
     }
 
-    public static List<OtherOneSideDTO> getDtos(List<OtherOneSide> otherOneSides){
-        List<OtherOneSideDTO> oosdtos = new ArrayList<>();
-        otherOneSides.forEach(otherOneSide -> oosdtos.add(new OtherOneSideDTO(otherOneSide)));
-        return oosdtos;
+    public static List<DriverDTO> getDtos(List<Driver> drivers){
+        List<DriverDTO> ddtos = new ArrayList<>();
+        drivers.forEach(driver -> ddtos.add(new DriverDTO(driver)));
+        return ddtos;
     }
 
-    public OtherOneSideDTO(OtherOneSide oos){
-        if(oos != null){
-            this.id = oos.getId();
-            this.name = oos.getName();
+    public DriverDTO(Driver d){
+        if(d != null){
+            this.id = d.getId();
+            this.name = d.getName();
         }
     }
 
@@ -41,11 +42,13 @@ public class OtherOneSideDTO {
         this.name = name;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OtherOneSideDTO that = (OtherOneSideDTO) o;
+        DriverDTO that = (DriverDTO) o;
         return id == that.id && name.equals(that.name);
     }
 
@@ -56,7 +59,7 @@ public class OtherOneSideDTO {
 
     @Override
     public String toString() {
-        return "OtherOneSide{" +
+        return "Driver{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

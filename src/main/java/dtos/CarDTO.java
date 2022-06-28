@@ -1,6 +1,6 @@
 package dtos;
 import entities.Car;
-import entities.OneSide;
+import entities.Driver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +8,7 @@ import java.util.Objects;
 public class CarDTO {
     private int id;
     private String name;
-    private OneSideDTO oneSide;
+    private DriverDTO driver;
     private List<RaceDTO> races = new ArrayList<>();
 
     public CarDTO(String name) {
@@ -45,12 +45,12 @@ public class CarDTO {
         this.name = name;
     }
 
-    public OneSideDTO getOneSide() {
-        return oneSide;
+    public DriverDTO getDriver() {
+        return driver;
     }
 
-    public void setOneSide(OneSideDTO oneSide) {
-        this.oneSide = oneSide;
+    public void setDriver(DriverDTO driver) {
+        this.driver = driver;
     }
 
     public List<RaceDTO> getRaces() {
@@ -70,12 +70,12 @@ public class CarDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CarDTO that = (CarDTO) o;
-        return id == that.id && name.equals(that.name) && oneSide.equals(that.oneSide) && races.equals(that.races);
+        return id == that.id && name.equals(that.name) && driver.equals(that.driver) && races.equals(that.races);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, oneSide, races);
+        return Objects.hash(id, name, driver, races);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class CarDTO {
         return "Car{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", oneSide=" + oneSide +
+                ", driver=" + driver +
                 ", races=" + races +
                 '}';
     }

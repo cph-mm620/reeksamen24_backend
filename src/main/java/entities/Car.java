@@ -41,8 +41,8 @@ public class Car {
 
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "oneSide_id", referencedColumnName = "id", nullable = false)
-    private OneSide oneSide;
+    @JoinColumn(name = "driver_id", referencedColumnName = "id", nullable = false)
+    private Driver driver;
 
     @ManyToMany(mappedBy = "cars", cascade = CascadeType.PERSIST)
     private List<Race> races = new ArrayList<>();
@@ -76,12 +76,12 @@ public class Car {
         this.name = name;
     }
 
-    public OneSide getOneSide() {
-        return oneSide;
+    public Driver getDriver() {
+        return driver;
     }
 
-    public void setOneSide(OneSide oneSide) {
-        this.oneSide = oneSide;
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 
     public List<Race> getRaces() {
@@ -102,7 +102,7 @@ public class Car {
         return "Car{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", oneSide=" + oneSide +
+                ", driver=" + driver +
                 ", races=" + races +
                 '}';
     }

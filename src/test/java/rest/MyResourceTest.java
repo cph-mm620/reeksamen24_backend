@@ -2,10 +2,9 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.ManySideDTO;
-import dtos.OneSideDTO;
-import dtos.OtherManySideDTO;
-import dtos.OtherOneSideDTO;
+import dtos.CarDTO;
+import dtos.DriverDTO;
+import dtos.RaceDTO;
 import entities.*;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -26,7 +25,6 @@ import java.net.URI;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MyResourceTest {
 
@@ -74,14 +72,14 @@ class MyResourceTest {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM User u").executeUpdate();
             em.createQuery("DELETE FROM Role r").executeUpdate();
-            em.createNamedQuery("ManySide.deleteAllRows").executeUpdate();
-            em.createNativeQuery("ALTER TABLE ManySide AUTO_INCREMENT = 1").executeUpdate();
-            em.createNamedQuery("OneSide.deleteAllRows").executeUpdate();
-            em.createNativeQuery("ALTER TABLE OneSide AUTO_INCREMENT = 1").executeUpdate();
-            em.createNamedQuery("OtherManySide.deleteAllRows").executeUpdate();
-            em.createNativeQuery("ALTER TABLE OtherManySide AUTO_INCREMENT = 1").executeUpdate();
-            em.createNamedQuery("OtherOneSide.deleteAllRows").executeUpdate();
-            em.createNativeQuery("ALTER TABLE OtherOneSide AUTO_INCREMENT = 1").executeUpdate();
+            em.createNamedQuery("Car.deleteAllRows").executeUpdate();
+            em.createNativeQuery("ALTER TABLE Car AUTO_INCREMENT = 1").executeUpdate();
+            em.createNamedQuery("Driver.deleteAllRows").executeUpdate();
+            em.createNativeQuery("ALTER TABLE Driver AUTO_INCREMENT = 1").executeUpdate();
+            em.createNamedQuery("Race.deleteAllRows").executeUpdate();
+            em.createNativeQuery("ALTER TABLE Race AUTO_INCREMENT = 1").executeUpdate();
+//            em.createNamedQuery("OtherOneSide.deleteAllRows").executeUpdate();
+//            em.createNativeQuery("ALTER TABLE OtherOneSide AUTO_INCREMENT = 1").executeUpdate();
             em.getTransaction().commit();
 
             em.getTransaction().begin();
@@ -95,26 +93,26 @@ class MyResourceTest {
             Role userRole = new Role("user");
             Role adminRole = new Role("admin");
 
-            ManySide ms = new ManySide(1, "first many side");
-            ManySide ms2 = new ManySide(2, "second many side");
-            ManySide ms3 = new ManySide(3, "third many side");
-            OtherManySide oms = new OtherManySide("first other many side");
-            OtherManySide oms2 = new OtherManySide("second other many side");
-            OtherManySide oms3 = new OtherManySide("third other many side");
-            OneSide os = new OneSide("one side");
-            OneSide os2 = new OneSide("another one side");
-            OtherOneSide oos = new OtherOneSide("other one side");
+            Car c = new Car(1, "Volvo");
+            Car c2 = new Car(2, "Fiat");
+            Car c3 = new Car(3, "Mazda");
+            Race r = new Race("Testing");
+            Race r2 = new Race("Round 3");
+            Race r3 = new Race("Round 6");
+            Driver d = new Driver("Lewis Hamiltion");
+            Driver d2 = new Driver("Charles Leclerc");
+           // OtherOneSide oos = new OtherOneSide("other one side");
 
-            ms.setOneSide(os2);
-            ms2.setOneSide(os);
-            ms3.setOneSide(os);
-            ms.addToOtherManySides(oms);
-            ms.addToOtherManySides(oms2);
-            ms2.addToOtherManySides(oms2);
-            ms2.addToOtherManySides(oms3);
-            ms3.addToOtherManySides(oms3);
-            ms3.addToOtherManySides(oms);
-            os.setOtherOneSide(oos);
+            c.setDriver(d2);
+            c2.setDriver(d);
+            c3.setDriver(d);
+            c.addToRaces(r);
+            c.addToRaces(r2);
+            c2.addToRaces(r2);
+            c2.addToRaces(r3);
+            c3.addToRaces(r3);
+            c3.addToRaces(r);
+            //os.setOtherOneSide(oos);
 
             user.addRole(userRole);
             admin.addRole(adminRole);
@@ -126,9 +124,9 @@ class MyResourceTest {
             em.persist(user);
             em.persist(admin);
             em.persist(both);
-            em.persist(ms);
-            em.persist(ms2);
-            em.persist(ms3);
+            em.persist(c);
+            em.persist(c2);
+            em.persist(c3);
 
             em.getTransaction().commit();
         } finally {
@@ -152,17 +150,17 @@ class MyResourceTest {
 
     @Test
     void create() {
-        ManySideDTO ms = new ManySideDTO("new many side");
-        OtherManySideDTO oms = new OtherManySideDTO("first other many side");
-        OtherManySideDTO oms2 = new OtherManySideDTO("second other many side");
-        OneSideDTO os = new OneSideDTO("one side");
-        OtherOneSideDTO oos = new OtherOneSideDTO("other one side");
+        CarDTO c = new CarDTO("new car");
+        RaceDTO r = new RaceDTO("first race");
+        RaceDTO r2 = new RaceDTO("second race");
+        DriverDTO d = new DriverDTO("driver");
+      //  OtherOneSideDTO oos = new OtherOneSideDTO("other one side");
 
-        ms.setOneSide(os);
-        os.setOtherOneSide(oos);
-        ms.addToOtherManySides(oms);
-        ms.addToOtherManySides(oms2);
-        String requestBody = GSON.toJson(ms);
+        c.setDriver(d);
+      //  os.setOtherOneSide(oos);
+        c.addToRaces(r);
+        c.addToRaces(r2);
+        String requestBody = GSON.toJson(c);
         System.out.println(requestBody);
 
         given()
@@ -212,15 +210,15 @@ class MyResourceTest {
 
     @Test
     void update() {
-        ManySideDTO ms = new ManySideDTO("changed many side");
-        OtherManySideDTO oms = new OtherManySideDTO("first other many side");
-        OtherManySideDTO oms2 = new OtherManySideDTO("second other many side");
-        OneSideDTO os = new OneSideDTO("one side");
+        CarDTO c = new CarDTO("changed car");
+        RaceDTO r = new RaceDTO("Updated Race");
+        RaceDTO r2 = new RaceDTO("second Updated Race");
+        DriverDTO d = new DriverDTO("Driver Update");
 
-        ms.setOneSide(os);
-        ms.addToOtherManySides(oms);
-        ms.addToOtherManySides(oms2);
-        String requestBody = GSON.toJson(ms);
+        c.setDriver(d);
+        c.addToRaces(r);
+        c.addToRaces(r2);
+        String requestBody = GSON.toJson(c);
 
         given()
                 .header("Content-type", ContentType.JSON)
@@ -230,7 +228,7 @@ class MyResourceTest {
                 .put("myPath/update/2")
                 .then()
                 .assertThat()
-                .body("name", equalTo("changed many side"));
+                .body("name", equalTo("changed car"));
     }
 
     @Test

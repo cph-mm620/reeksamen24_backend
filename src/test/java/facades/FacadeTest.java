@@ -1,6 +1,6 @@
 package facades;
 
-import dtos.ManySideDTO;
+import dtos.CarDTO;
 import entities.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,14 +39,12 @@ class FacadeTest {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM User u").executeUpdate();
             em.createQuery("DELETE FROM Role r").executeUpdate();
-            em.createNamedQuery("ManySide.deleteAllRows").executeUpdate();
-            em.createNativeQuery("ALTER TABLE ManySide AUTO_INCREMENT = 1").executeUpdate();
-            em.createNamedQuery("OneSide.deleteAllRows").executeUpdate();
-            em.createNativeQuery("ALTER TABLE OneSide AUTO_INCREMENT = 1").executeUpdate();
-            em.createNamedQuery("OtherManySide.deleteAllRows").executeUpdate();
-            em.createNativeQuery("ALTER TABLE OtherManySide AUTO_INCREMENT = 1").executeUpdate();
-            em.createNamedQuery("OtherOneSide.deleteAllRows").executeUpdate();
-            em.createNativeQuery("ALTER TABLE OtherOneSide AUTO_INCREMENT = 1").executeUpdate();
+            em.createNamedQuery("Car.deleteAllRows").executeUpdate();
+            em.createNativeQuery("ALTER TABLE Car AUTO_INCREMENT = 1").executeUpdate();
+            em.createNamedQuery("Driver.deleteAllRows").executeUpdate();
+            em.createNativeQuery("ALTER TABLE Driver AUTO_INCREMENT = 1").executeUpdate();
+            em.createNamedQuery("Race.deleteAllRows").executeUpdate();
+            em.createNativeQuery("ALTER TABLE Race AUTO_INCREMENT = 1").executeUpdate();
             em.getTransaction().commit();
 
             em.getTransaction().begin();
@@ -60,26 +58,26 @@ class FacadeTest {
             Role userRole = new Role("user");
             Role adminRole = new Role("admin");
 
-            ManySide ms = new ManySide("first many side");
-            ManySide ms2 = new ManySide("second many side");
-            ManySide ms3 = new ManySide("third many side");
-            OtherManySide oms = new OtherManySide("first other many side");
-            OtherManySide oms2 = new OtherManySide("second other many side");
-            OtherManySide oms3 = new OtherManySide("third other many side");
-            OneSide os = new OneSide("one side");
-            OneSide os2 = new OneSide("another one side");
-            OtherOneSide oos = new OtherOneSide("other one side");
+            Car c = new Car("Volvo");
+            Car c2 = new Car("BMW");
+            Car c3 = new Car("Ford");
+            Race r = new Race("Testing");
+            Race r2 = new Race("Round 1");
+            Race r3 = new Race("Round 2");
+            Driver d = new Driver("Max Verstappen");
+            Driver d2 = new Driver("Sergio Perez");
+    //        OtherOneSide oos = new OtherOneSide("other one side");
 
-            ms.setOneSide(os2);
-            ms2.setOneSide(os);
-            ms3.setOneSide(os);
-            ms.addToOtherManySides(oms);
-            ms.addToOtherManySides(oms2);
-            ms2.addToOtherManySides(oms2);
-            ms2.addToOtherManySides(oms3);
-            ms3.addToOtherManySides(oms3);
-            ms3.addToOtherManySides(oms);
-            os.setOtherOneSide(oos);
+            c.setDriver(d2);
+            c2.setDriver(d);
+            c3.setDriver(d);
+            c.addToRaces(r);
+            c.addToRaces(r2);
+            c2.addToRaces(r2);
+            c2.addToRaces(r3);
+            c3.addToRaces(r3);
+            c3.addToRaces(r);
+          //  os.setOtherOneSide(oos);
 
             user.addRole(userRole);
             admin.addRole(adminRole);
@@ -91,9 +89,9 @@ class FacadeTest {
             em.persist(user);
             em.persist(admin);
             em.persist(both);
-            em.persist(ms);
-            em.persist(ms2);
-            em.persist(ms3);
+            em.persist(c);
+            em.persist(c2);
+            em.persist(c3);
 
             em.getTransaction().commit();
         } finally {
@@ -103,26 +101,26 @@ class FacadeTest {
 
     @Test
     void create() {
-        ManySide ms = new ManySide("create added this");
-        OtherManySide oms = new OtherManySide("create added this oms");
-        OtherManySide oms2 = new OtherManySide("create added this oms2");
-        ms.addToOtherManySides(oms);
-        ms.addToOtherManySides(oms2);
-        OneSide os = new OneSide("create added this os");
-        ms.setOneSide(os);
+        Car c = new Car("create added this");
+        Race r = new Race("create added this race");
+        Race r2 = new Race("create added this race nr 2");
+        c.addToRaces(r);
+        c.addToRaces(r2);
+        Driver d = new Driver("create added this driver");
+        c.setDriver(d);
 
-        String actual = facade.create(ms).getName();
+        String actual = facade.create(c).getName();
         String expected = "create added this";
         assertEquals(actual, expected);
     }
 
     @Test
     void readWhere() {
-        List<ManySideDTO> msdto = facade.readWhere("another one side");
-        for (ManySideDTO msd: msdto) {
-            System.out.println(msd);
+        List<CarDTO> cdto = facade.readWhere("Maria McNally");
+        for (CarDTO cd: cdto) {
+            System.out.println(cd);
         }
-        int actual = msdto.size();
+        int actual = cdto.size();
         int expected = 1;
         assertEquals(actual, expected);
 
@@ -130,30 +128,30 @@ class FacadeTest {
 
     @Test
     void read() {
-        List<ManySideDTO> msdto = facade.read();
-        for (ManySideDTO msd: msdto) {
-            System.out.println(msd);
+        List<CarDTO> cdto = facade.read();
+        for (CarDTO cd: cdto) {
+            System.out.println(cd);
         }
-        int actual = msdto.size();
+        int actual = cdto.size();
         int expected = manySideSize;
         assertEquals(actual, expected);
     }
 
     @Test
     void update() {
-        ManySide ms = new ManySide("update changed this");
-        ms.setId(1);
-        OtherManySide oms = new OtherManySide("first other many side");
-        OtherManySide oms2 = new OtherManySide("second other many side");
-        OneSide os = new OneSide("one side");
+        Car c = new Car("update changed this");
+        c.setId(1);
+        Race r = new Race("first updated race");
+        Race r2 = new Race("second updated race");
+        Driver d = new Driver("Driver updated");
 
-        ms.setOneSide(os);
-        ms.addToOtherManySides(oms);
-        ms.addToOtherManySides(oms2);
-        System.out.println("ms");
-        System.out.println(ms);
+        c.setDriver(d);
+        c.addToRaces(r);
+        c.addToRaces(r2);
+        System.out.println("c as in car c");
+        System.out.println(c);
 
-        String actual = facade.update(ms).getName();
+        String actual = facade.update(c).getName();
         String expected = "update changed this";
         assertEquals(actual, expected);
     }
@@ -168,8 +166,8 @@ class FacadeTest {
 
     @Test
     void getById() {
-        ManySideDTO msdto = facade.getById(3);
-        String actual = msdto.getName();
+        CarDTO cdto = facade.getById(3);
+        String actual = cdto.getName();
         String expected = "third many side";
         assertEquals(expected, actual);
     }

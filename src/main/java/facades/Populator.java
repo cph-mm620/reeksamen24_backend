@@ -20,31 +20,29 @@ public class Populator {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        ManySide ms = new ManySide("first many side");
-        ManySide ms2 = new ManySide("second many side");
-        ManySide ms3 = new ManySide("third many side");
-        OtherManySide oms = new OtherManySide("first other many side");
-        OtherManySide oms2 = new OtherManySide("second other many side");
-        OtherManySide oms3 = new OtherManySide("third other many side");
-        OneSide os = new OneSide("one side");
-        OtherOneSide oos = new OtherOneSide("other one side");
+        Car c = new Car("Fararri");
+        Car c2 = new Car("Lamborghini");
+        Car c3 = new Car("Bentley");
+        Race r = new Race("Testing");
+        Race r2 = new Race("Firts Round ");
+        Race r3 = new Race("Secound Round");
+        Driver d = new Driver("Lando Norris",1997, "Pro", "Male");
 
-        ms.setOneSide(os);
-        ms2.setOneSide(os);
-        ms3.setOneSide(os);
+        c.setDriver(d);
+        c2.setDriver(d);
+        c3.setDriver(d);
 
-        ms.addToOtherManySides(oms);
-        ms.addToOtherManySides(oms2);
-        ms2.addToOtherManySides(oms2);
-        ms2.addToOtherManySides(oms3);
-        ms3.addToOtherManySides(oms3);
-        ms3.addToOtherManySides(oms);
+        c.addToRaces(r);
+        c.addToRaces(r2);
+        c2.addToRaces(r2);
+        c2.addToRaces(r3);
+        c3.addToRaces(r3);
+        c3.addToRaces(r);
 
-        os.setOtherOneSide(oos);
 
-        em.persist(ms);
-        em.persist(ms2);
-        em.persist(ms3);
+        em.persist(c);
+        em.persist(c2);
+        em.persist(c3);
 
         em.getTransaction().commit();
     }
@@ -78,8 +76,8 @@ public class Populator {
     }
 
     public static void main(String[] args) {
-        //     populate();
-               populateUsers();
+            populate();
+              // populateUsers();
 
     }
 }

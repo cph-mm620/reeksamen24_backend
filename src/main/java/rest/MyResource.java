@@ -2,7 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import entities.ManySide;
+import entities.Car;
 import facades.Facade;
 import utils.EMF_Creator;
 
@@ -30,9 +30,9 @@ public class MyResource {
     public Response create(String jsonContext) {
         System.out.println("------------------");
         System.out.println(jsonContext);
-        ManySide m = GSON.fromJson(jsonContext, ManySide.class);
-        System.out.println(m);
-        return Response.ok().entity(facade.create(m)).build();
+        Car c = GSON.fromJson(jsonContext, Car.class);
+        System.out.println(c);
+        return Response.ok().entity(facade.create(c)).build();
     }
 
 
@@ -62,9 +62,9 @@ public class MyResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update (@PathParam("id") int id, String jsonContext) {
-            ManySide ms = GSON.fromJson(jsonContext, ManySide.class);
-            ms.setId(id);
-            return Response.ok().entity(facade.update(ms)).build();
+            Car c = GSON.fromJson(jsonContext, Car.class);
+            c.setId(id);
+            return Response.ok().entity(facade.update(c)).build();
     }
 
     @DELETE

@@ -4,8 +4,7 @@ import dtos.CarDTO;
 
 import entities.Car;
 
-import entities.OneSide;
-import entities.OtherOneSide;
+import entities.Driver;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,11 +37,9 @@ public class Facade {
 
             Car c = new Car(newCar.getName());
             c.setRaces(newCar.getRaces());
-            OneSide os = new OneSide(newCar.getOneSide().getName());
-            OtherOneSide oos = new OtherOneSide(newCar.getOneSide().getOtherOneSide().getName());
+            Driver d = new Driver(newCar.getDriver().getName());
 
-            c.setOneSide(os);
-            os.setOtherOneSide(oos);
+            c.setDriver(d);
             em.persist(c);
 
             em.getTransaction().commit();
@@ -64,11 +61,11 @@ public class Facade {
         }
     }
 
-    public List<CarDTO> readWhere(String nameOfOneSide){
+    public List<CarDTO> readWhere(String nameOfDriver){
         EntityManager em = emf.createEntityManager();
         try{
-            TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c WHERE c.oneSide.name = :oneSideName", Car.class);
-            query.setParameter("oneSideName", nameOfOneSide);
+            TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c WHERE c.driver.name = :driverName", Car.class);
+            query.setParameter("driverName", nameOfDriver);
             List<Car> cars = query.getResultList();
             List<CarDTO> cdtos = CarDTO.getDtos(cars);
             return cdtos;
@@ -83,7 +80,7 @@ public class Facade {
             Car c = em.find(Car.class, newCar.getId());
             c.setName(newCar.getName());
             c.setRaces(newCar.getRaces());
-            c.setOneSide(newCar.getOneSide());
+            c.setDriver(newCar.getDriver());
             em.persist(c);
             return new CarDTO(c);
         }finally {
