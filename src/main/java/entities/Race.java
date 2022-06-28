@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NamedQuery(name = "OtherManySide.deleteAllRows", query = "DELETE from OtherManySide oms")
-@Table(name = "OtherManySide")
-public class OtherManySide {
+@NamedQuery(name = "Race.deleteAllRows", query = "DELETE from Race r")
+@Table(name = "Race")
+public class Race {
     @Id
     @NotNull
     @Column(name = "id")
@@ -18,16 +18,30 @@ public class OtherManySide {
     @Column(name = "name")
     private String name;
 
-    @JoinTable(name = "manyToMany", joinColumns = {
-            @JoinColumn(name = "manySides", referencedColumnName = "id")}, inverseJoinColumns = {
-            @JoinColumn(name = "otherManySides", referencedColumnName = "id")})
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    private List<ManySide> manySides = new ArrayList<>();
+    @NotNull
+    @Column(name = "location")
+    private String location;
 
-    public OtherManySide() {
+    @NotNull
+    @Column(name = "startDate")
+    private String startDate;
+
+    @NotNull
+    @Column(name = "duration")
+    private String duration;
+
+
+
+    @JoinTable(name = "car_race", joinColumns = {
+            @JoinColumn(name = "cars", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "races", referencedColumnName = "id")})
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Car> cars = new ArrayList<>();
+
+    public Race() {
     }
 
-    public OtherManySide(String name) {
+    public Race(String name) {
         this.name = name;
     }
 
@@ -47,16 +61,16 @@ public class OtherManySide {
         this.name = name;
     }
 
-    public List<ManySide> getManySides() {
-        return manySides;
+    public List<Car> getCars() {
+        return cars;
     }
 
-    public void setManySides(List<ManySide> manySides) {
-        this.manySides = manySides;
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
     }
 
-    public void addToManySides(ManySide manySide) {
-        this.manySides.add(manySide);
+    public void addToCars(Car car) {
+        this.cars.add(car);
     }
 
     @Override

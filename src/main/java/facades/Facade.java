@@ -1,7 +1,9 @@
 package facades;
 
-import dtos.ManySideDTO;
-import entities.ManySide;
+import dtos.CarDTO;
+
+import entities.Car;
+
 import entities.OneSide;
 import entities.OtherOneSide;
 
@@ -29,84 +31,84 @@ public class Facade {
         return emf.createEntityManager();
     }
 
-    public ManySideDTO create(ManySide newManySide){
+    public CarDTO create(Car newCar){
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
 
-            ManySide ms = new ManySide(newManySide.getName());
-            ms.setOtherManySides(newManySide.getOtherManySides());
-            OneSide os = new OneSide(newManySide.getOneSide().getName());
-            OtherOneSide oos = new OtherOneSide(newManySide.getOneSide().getOtherOneSide().getName());
+            Car c = new Car(newCar.getName());
+            c.setRaces(newCar.getRaces());
+            OneSide os = new OneSide(newCar.getOneSide().getName());
+            OtherOneSide oos = new OtherOneSide(newCar.getOneSide().getOtherOneSide().getName());
 
-            ms.setOneSide(os);
+            c.setOneSide(os);
             os.setOtherOneSide(oos);
-            em.persist(ms);
+            em.persist(c);
 
             em.getTransaction().commit();
-            return new ManySideDTO(ms);
+            return new CarDTO(c);
         }finally {
             em.close();
         }
     }
 
-    public List<ManySideDTO> read(){
+    public List<CarDTO> read(){
         EntityManager em = emf.createEntityManager();
         try{
-            TypedQuery<ManySide> query = em.createQuery("SELECT m FROM ManySide m", ManySide.class);
-            List<ManySide> manySides = query.getResultList();
-            List<ManySideDTO> msdtos = ManySideDTO.getDtos(manySides);
-            return msdtos;
+            TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c", Car.class);
+            List<Car> cars = query.getResultList();
+            List<CarDTO> cdtos = CarDTO.getDtos(cars);
+            return cdtos;
         }finally {
             em.close();
         }
     }
 
-    public List<ManySideDTO> readWhere(String nameOfOneSide){
+    public List<CarDTO> readWhere(String nameOfOneSide){
         EntityManager em = emf.createEntityManager();
         try{
-            TypedQuery<ManySide> query = em.createQuery("SELECT m FROM ManySide m WHERE m.oneSide.name = :oneSideName", ManySide.class);
+            TypedQuery<Car> query = em.createQuery("SELECT c FROM Car c WHERE c.oneSide.name = :oneSideName", Car.class);
             query.setParameter("oneSideName", nameOfOneSide);
-            List<ManySide> manySides = query.getResultList();
-            List<ManySideDTO> msdtos = ManySideDTO.getDtos(manySides);
-            return msdtos;
+            List<Car> cars = query.getResultList();
+            List<CarDTO> cdtos = CarDTO.getDtos(cars);
+            return cdtos;
         }finally {
             em.close();
         }
     }
 
-    public ManySideDTO update(ManySide newManySide){
+    public CarDTO update(Car newCar){
         EntityManager em = emf.createEntityManager();
         try{
-            ManySide ms = em.find(ManySide.class, newManySide.getId());
-            ms.setName(newManySide.getName());
-            ms.setOtherManySides(newManySide.getOtherManySides());
-            ms.setOneSide(newManySide.getOneSide());
-            em.persist(ms);
-            return new ManySideDTO(ms);
+            Car c = em.find(Car.class, newCar.getId());
+            c.setName(newCar.getName());
+            c.setRaces(newCar.getRaces());
+            c.setOneSide(newCar.getOneSide());
+            em.persist(c);
+            return new CarDTO(c);
         }finally {
             em.close();
         }
     }
 
-    public ManySideDTO delete(int id){
+    public CarDTO delete(int id){
         EntityManager em = emf.createEntityManager();
         try{
-            ManySide ms = em.find(ManySide.class, id);
+            Car c = em.find(Car.class, id);
             em.getTransaction().begin();
-            em.remove(ms);
+            em.remove(c);
             em.getTransaction().commit();
-            return new ManySideDTO(ms);
+            return new CarDTO(c);
         }finally {
             em.close();
         }
     }
 
-    public ManySideDTO getById(int id){
+    public CarDTO getById(int id){
         EntityManager em = emf.createEntityManager();
         try{
-            ManySide c = em.find(ManySide.class, id);
-            return new ManySideDTO(c);
+            Car c = em.find(Car.class, id);
+            return new CarDTO(c);
         }finally {
             em.close();
         }

@@ -1,27 +1,27 @@
 package dtos;
-import entities.OtherManySide;
+import entities.Race;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class OtherManySideDTO {
+public class RaceDTO {
     private int id;
     private String name;
 
-    public OtherManySideDTO(String name) {
+    public RaceDTO(String name) {
         this.name = name;
     }
 
-    public static List<OtherManySideDTO> getDtos(List<OtherManySide> manySides){
-        List<OtherManySideDTO> omsdtos = new ArrayList<>();
-        manySides.forEach(manySide -> omsdtos.add(new OtherManySideDTO(manySide)));
-        return omsdtos;
+    public static List<RaceDTO> getDtos(List<Race> cars){
+        List<RaceDTO> rdtos = new ArrayList<>();
+        cars.forEach(car -> rdtos.add(new RaceDTO(car)));
+        return rdtos;
     }
 
-    public OtherManySideDTO(OtherManySide oms){
-        if(oms != null){
-            this.id = oms.getId();
-            this.name = oms.getName();
+    public RaceDTO(Race r){
+        if(r != null){
+            this.id = r.getId();
+            this.name = r.getName();
         }
     }
 
@@ -45,7 +45,7 @@ public class OtherManySideDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OtherManySideDTO that = (OtherManySideDTO) o;
+        RaceDTO that = (RaceDTO) o;
         return id == that.id && name.equals(that.name);
     }
 
@@ -56,7 +56,7 @@ public class OtherManySideDTO {
 
     @Override
     public String toString() {
-        return "OtherManySide{" +
+        return "Race{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

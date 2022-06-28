@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NamedQuery(name = "ManySide.deleteAllRows", query = "DELETE from ManySide ms")
-@Table(name = "ManySide")
-public class ManySide {
+@NamedQuery(name = "Car.deleteAllRows", query = "DELETE from Car c")
+@Table(name = "Car")
+public class Car {
     @Id
     @NotNull
     @Column(name = "id")
@@ -18,23 +18,45 @@ public class ManySide {
     @Column(name = "name")
     private String name;
 
+    @NotNull
+    @Column(name = "brand")
+    private String brand;
+
+    @NotNull
+    @Column(name = "color")
+    private String color;
+
+    @NotNull
+    @Column(name = "sponsor")
+    private String sponsor;
+
+    @NotNull
+    @Column(name = "make")
+    private String make;
+
+    @NotNull
+    @Column(name = "year")
+    private int year;
+
+
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "oneSide_id", referencedColumnName = "id", nullable = false)
     private OneSide oneSide;
 
-    @ManyToMany(mappedBy = "manySides", cascade = CascadeType.PERSIST)
-    private List<OtherManySide> otherManySides = new ArrayList<>();
+    @ManyToMany(mappedBy = "cars", cascade = CascadeType.PERSIST)
+    private List<Race> races = new ArrayList<>();
 
-    public ManySide() {
+    public Car() {
     }
 
     //Just for the test class
-    public ManySide(int id, String name) {
+    public Car(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public ManySide(String name) {
+    public Car(String name) {
         this.name = name;
     }
 
@@ -62,26 +84,26 @@ public class ManySide {
         this.oneSide = oneSide;
     }
 
-    public List<OtherManySide> getOtherManySides() {
-        return otherManySides;
+    public List<Race> getRaces() {
+        return races;
     }
 
-    public void setOtherManySides(List<OtherManySide> otherManySides) {
-        this.otherManySides = otherManySides;
+    public void setRaces(List<Race> races) {
+        this.races = races;
     }
 
-    public void addToOtherManySides(OtherManySide otherManySide) {
-        this.otherManySides.add(otherManySide);
-        otherManySide.addToManySides(this);
+    public void addToRaces(Race race) {
+        this.races.add(race);
+        race.addToCars(this);
     }
 
     @Override
     public String toString() {
-        return "ManySide{" +
+        return "Car{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", oneSide=" + oneSide +
-                ", otherManySides=" + otherManySides +
+                ", races=" + races +
                 '}';
     }
 }
