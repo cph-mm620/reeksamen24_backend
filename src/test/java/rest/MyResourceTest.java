@@ -246,7 +246,7 @@ class MyResourceTest {
                 .body("name", equalTo("changed car"));
     }*/
 
-    @Test
+  /*  @Test
     void delete() {
         given()
             .contentType("application/json")
@@ -255,7 +255,7 @@ class MyResourceTest {
             .then()
             .statusCode(200)
             .body("removedId", equalTo(3));
-    }
+    }*/
 
     @Test
     void adminTest() {
