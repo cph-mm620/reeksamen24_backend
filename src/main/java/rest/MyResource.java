@@ -45,10 +45,9 @@ public class MyResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("readDriver/{id}") //name of someone id
-    public Response getByDriverId (@PathParam("id") int id) {
-        System.out.println(id);
-        return Response.ok().entity(GSON.toJson(facade.getByDriverId(id))).build();
+    @Path("readDriver") //name of someone id
+    public Response getDrivers () {
+        return Response.ok().entity(GSON.toJson(facade.getDrivers())).build();
     }
 
     @GET

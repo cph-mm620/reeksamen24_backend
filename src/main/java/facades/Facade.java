@@ -126,4 +126,16 @@ public class Facade {
             em.close();
         }
     }
+
+    public List<DriverDTO> getDrivers() {
+        EntityManager em = emf.createEntityManager();
+        try{
+            TypedQuery<Driver> query = em.createQuery("SELECT d FROM Driver d", Driver.class);
+            List<Driver> drivers = query.getResultList();
+            List<DriverDTO> ddtos = DriverDTO.getDtos(drivers);
+            return ddtos;
+        }finally {
+            em.close();
+        }
+    }
 }

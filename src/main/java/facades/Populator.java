@@ -19,6 +19,18 @@ public class Populator {
     public static void populate(){
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+        em.createQuery("DELETE FROM User u").executeUpdate();
+        em.createQuery("DELETE FROM Role r").executeUpdate();
+        em.createNamedQuery("Driver.deleteAllRows").executeUpdate();
+        em.createNativeQuery("ALTER TABLE Driver AUTO_INCREMENT = 1").executeUpdate();
+        em.createNamedQuery("Race.deleteAllRows").executeUpdate();
+        em.createNativeQuery("ALTER TABLE Race AUTO_INCREMENT = 1").executeUpdate();
+        em.createNamedQuery("Car.deleteAllRows").executeUpdate();
+        em.createNativeQuery("ALTER TABLE Car AUTO_INCREMENT = 1").executeUpdate();
+        em.getTransaction().commit();
+
         em.getTransaction().begin();
         Car c = new Car("DCT F8 Tributo","Farrari","Red", "Farrari",2021);
         Car c2 = new Car("Aventador LP","Lamborghini","Black", "Redbull", 2021);
@@ -79,8 +91,8 @@ public class Populator {
     }
 
     public static void main(String[] args) {
-         populate();
-        //       populateUsers();
+        //   populate();
+             populateUsers();
 
     }
 }
