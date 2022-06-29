@@ -3,9 +3,11 @@ package facades;
 import dtos.CarDTO;
 
 import dtos.DriverDTO;
+import dtos.RaceDTO;
 import entities.Car;
 
 import entities.Driver;
+import entities.Race;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -48,6 +50,7 @@ public class Facade {
         }
     }
 
+
     public List<CarDTO> read(){
         EntityManager em = emf.createEntityManager();
         try{
@@ -60,7 +63,7 @@ public class Facade {
         }
     }
 
-    public List<DriverDTO> readWhere(){
+    public List<DriverDTO> readDriver(){
         EntityManager em = emf.createEntityManager();
         try{
             TypedQuery<Driver> query = em.createQuery("SELECT d FROM Driver d",  Driver.class);
@@ -134,6 +137,18 @@ public class Facade {
             List<Driver> drivers = query.getResultList();
             List<DriverDTO> ddtos = DriverDTO.getDtos(drivers);
             return ddtos;
+        }finally {
+            em.close();
+        }
+    }
+
+    public List<RaceDTO> getRaces() {
+        EntityManager em = emf.createEntityManager();
+        try{
+            TypedQuery<Race> query = em.createQuery("SELECT r FROM Race r", Race.class);
+            List<Race> races = query.getResultList();
+            List<RaceDTO> rdtos = RaceDTO.getDtos(races);
+            return rdtos;
         }finally {
             em.close();
         }

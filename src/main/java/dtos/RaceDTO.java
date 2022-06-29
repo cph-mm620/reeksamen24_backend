@@ -7,6 +7,8 @@ import java.util.Objects;
 public class RaceDTO {
     private int id;
     private String name;
+    private String location;
+    private String duration;
 
     public RaceDTO(String name) {
         this.name = name;
@@ -22,6 +24,9 @@ public class RaceDTO {
         if(r != null){
             this.id = r.getId();
             this.name = r.getName();
+            this.location = r.getLocation();
+            this.duration = r.getDuration();
+
         }
     }
 
@@ -39,6 +44,22 @@ public class RaceDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     @Override
@@ -59,6 +80,8 @@ public class RaceDTO {
         return "Race{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", duration='" + duration + '\'' +
                 '}';
     }
 }

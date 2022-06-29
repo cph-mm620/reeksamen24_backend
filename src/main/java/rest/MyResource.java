@@ -45,11 +45,17 @@ public class MyResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("readDriver") //name of someone id
+    @Path("readDriver")
     public Response getDrivers () {
         return Response.ok().entity(GSON.toJson(facade.getDrivers())).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("readRace")
+    public Response getRace () {
+        return Response.ok().entity(GSON.toJson(facade.getRaces())).build();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

@@ -2,6 +2,7 @@ package facades;
 
 import dtos.CarDTO;
 import dtos.DriverDTO;
+import dtos.RaceDTO;
 import entities.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -117,8 +118,8 @@ class FacadeTest {
     }
 
     @Test
-    void readWhere() {
-        List<DriverDTO> ddto = facade.readWhere();
+    void readDriver() {
+        List<DriverDTO> ddto = facade.readDriver();
         for (DriverDTO cd: ddto) {
             System.out.println(cd);
         }
@@ -190,6 +191,17 @@ class FacadeTest {
             System.out.println(dd);
         }
         int actual = ddto.size();
+        int expected = manySideSize;
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    void getRaces() {
+        List<RaceDTO> rdto = facade.getRaces();
+        for (RaceDTO rd: rdto) {
+            System.out.println(rd);
+        }
+        int actual = rdto.size();
         int expected = manySideSize;
         assertEquals(actual, expected);
     }

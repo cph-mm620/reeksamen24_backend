@@ -188,7 +188,7 @@ class MyResourceTest {
                 .body("size()", equalTo(3));
     }
 
-// Prøved at få delete til at virke fik fejl Error Code: 1451 JPA
+
 /*   @Test
     void readDriver() {
         given()
@@ -222,6 +222,17 @@ class MyResourceTest {
                 .body("size()", equalTo(2));
     }
 
+    @Test
+    void getRaces() {
+        given()
+                .contentType("application/json")
+                .get("myPath/readRace/")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("size()", equalTo(3));
+    }
+// Prøved at få delete til at virke fik fejl Error Code: 1451 JPA (cannot delete or update a parent row)
 /*    @Test
     void update() {
         CarDTO c = new CarDTO("changed car", "something");
@@ -246,7 +257,8 @@ class MyResourceTest {
                 .body("name", equalTo("changed car"));
     }*/
 
-  /*  @Test
+// Prøved at få delete til at virke fik fejl Error Code: 1451 JPA (cannot delete or update a parent row)
+/*    @Test
     void delete() {
         given()
             .contentType("application/json")
